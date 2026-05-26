@@ -9,6 +9,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { PharmacyNavbar } from "@/components/layout/pharmacy-navbar";
 import { ProductCard } from "@/components/products/product-card";
+import { ScrollProgress } from "@/components/shared/scroll-progress";
+import { ScrollReveal } from "@/components/shared/scroll-reveal";
+import { StaggerReveal } from "@/components/shared/stagger-reveal";
 import { FuturisticBackground } from "@/components/shared/futuristic-background";
 import { FloatingPharmacyElements } from "@/components/shared/floating-pharmacy-elements";
 import { useLanguage } from "@/providers/language-provider";
@@ -30,12 +33,13 @@ export function ProductDetailView({ product, related }: ProductDetailViewProps) 
 
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-[radial-gradient(1200px_circle_at_20%_0%,rgba(16,185,129,0.14),transparent_48%),linear-gradient(180deg,#f7fbff_0%,#ffffff_45%,#f0fdf4_100%)] text-slate-900 dark:bg-[radial-gradient(1200px_circle_at_20%_0%,rgba(16,185,129,0.10),transparent_52%),linear-gradient(180deg,#060b12_0%,#0b1220_55%,#071a16_100%)] dark:text-slate-100">
+      <ScrollProgress />
       <FuturisticBackground />
       <FloatingPharmacyElements />
       <PharmacyNavbar />
 
       <main className="relative mx-auto max-w-7xl px-4 py-10 md:px-6">
-        <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
+        <motion.div initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }}>
           <Link
             href="/#products"
             className="inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-bold text-emerald-600 transition hover:bg-emerald-500/10"
@@ -47,40 +51,30 @@ export function ProductDetailView({ product, related }: ProductDetailViewProps) 
 
         <div className="mt-8 grid gap-10 lg:grid-cols-2">
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6 }}
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
             className="relative"
           >
-            <motion.div
-              animate={{ y: [0, -10, 0] }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              className="overflow-hidden rounded-3xl border border-emerald-500/20 bg-white/60 p-4 backdrop-blur-2xl dark:bg-slate-900/60 neo-glow"
-            >
-              <motion.div whileHover={{ scale: 1.03 }} transition={{ duration: 0.4 }}>
-                <Image
-                  src={product.image}
-                  alt={name}
-                  width={700}
-                  height={700}
-                  className="h-[420px] w-full rounded-2xl object-cover md:h-[500px]"
-                  priority
-                />
-              </motion.div>
-            </motion.div>
-            <motion.div
-              className="absolute -end-4 -top-4 grid size-16 place-content-center rounded-2xl bg-emerald-600 text-white shadow-xl neo-glow"
-              animate={{ rotate: [0, 10, -10, 0] }}
-              transition={{ duration: 4, repeat: Infinity }}
-            >
-              <ShieldCheck className="size-8" />
-            </motion.div>
+            <div className="border-beam hero-media-float overflow-hidden rounded-3xl border border-emerald-500/25 bg-white/80 p-4 shadow-xl neo-glow-soft dark:bg-slate-900/80">
+              <Image
+                src={product.image}
+                alt={name}
+                width={700}
+                height={700}
+                className="h-[420px] w-full rounded-2xl object-cover transition-transform duration-500 hover:scale-[1.02] md:h-[500px]"
+                priority
+              />
+            </div>
+            <div className="logo-float absolute end-4 top-4 grid size-14 place-content-center rounded-2xl bg-emerald-600 text-white shadow-md">
+              <ShieldCheck className="size-7" />
+            </div>
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.6 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
             className="space-y-6"
           >
             <div className="flex flex-wrap gap-2">
@@ -95,20 +89,16 @@ export function ProductDetailView({ product, related }: ProductDetailViewProps) 
 
             <h1 className="text-3xl font-black leading-tight md:text-5xl">{name}</h1>
 
-            <motion.p
-              className="text-4xl font-black text-emerald-600"
-              animate={{ scale: [1, 1.02, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
+            <p className="text-4xl font-black text-emerald-600">
               {product.currency} {product.price.toFixed(2)}
-            </motion.p>
+            </p>
 
             <div className="grid gap-4 sm:grid-cols-2">
-              <div className="rounded-2xl border border-emerald-500/15 bg-white/50 p-4 backdrop-blur dark:bg-slate-900/50">
+              <div className="rounded-2xl border border-emerald-500/15 bg-white/80 p-4 dark:bg-slate-900/80">
                 <p className="text-xs font-bold uppercase text-slate-500">{t.productDetail.category}</p>
                 <p className="mt-1 font-bold">{categoryLabel}</p>
               </div>
-              <div className="rounded-2xl border border-emerald-500/15 bg-white/50 p-4 backdrop-blur dark:bg-slate-900/50">
+              <div className="rounded-2xl border border-emerald-500/15 bg-white/80 p-4 dark:bg-slate-900/80">
                 <p className="text-xs font-bold uppercase text-slate-500">{t.productDetail.availability}</p>
                 <p className={`mt-1 font-bold ${product.inStock ? "text-emerald-600" : "text-red-500"}`}>
                   {product.inStock ? t.products.inStock : t.products.outOfStock}
@@ -126,7 +116,7 @@ export function ProductDetailView({ product, related }: ProductDetailViewProps) 
               <span>{t.services.deliveryDesc}</span>
             </div>
 
-            <div className="rounded-2xl border border-emerald-500/20 bg-white/55 p-5 backdrop-blur-2xl dark:bg-slate-900/55 neo-glow">
+            <div className="rounded-2xl border border-emerald-500/20 bg-white/80 p-5 shadow-md neo-glow-soft dark:bg-slate-900/80">
               <p className="mb-3 text-sm font-bold">{t.productDetail.quantity}</p>
               <div className="flex flex-wrap items-center gap-4">
                 <div className="flex items-center gap-3 rounded-xl border border-emerald-500/20 bg-white/80 p-1 dark:bg-slate-900/80">
@@ -139,7 +129,7 @@ export function ProductDetailView({ product, related }: ProductDetailViewProps) 
                   </Button>
                   <motion.span
                     key={quantity}
-                    initial={{ scale: 1.3, opacity: 0 }}
+                    initial={{ scale: 1.2, opacity: 0.5 }}
                     animate={{ scale: 1, opacity: 1 }}
                     className="min-w-8 text-center text-xl font-black"
                   >
@@ -154,13 +144,9 @@ export function ProductDetailView({ product, related }: ProductDetailViewProps) 
                   </Button>
                 </div>
 
-                <motion.div
-                  className="flex-1"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
+                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
                   <Button
-                    className="h-12 w-full bg-green-600 text-base font-bold text-white hover:bg-green-700 neo-glow sm:min-w-[240px]"
+                    className="btn-premium h-12 w-full bg-green-600 text-base font-bold text-white hover:bg-green-700 sm:min-w-[240px]"
                     disabled={!product.inStock}
                     onClick={() =>
                       openWhatsApp(buildProductOrderMessage(name, quantity, locale))
@@ -176,19 +162,16 @@ export function ProductDetailView({ product, related }: ProductDetailViewProps) 
         </div>
 
         {related.length > 0 && (
-          <motion.section
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mt-20"
-          >
-            <h2 className="mb-8 text-2xl font-black md:text-3xl">{t.productDetail.relatedProducts}</h2>
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-              {related.map((p, i) => (
-                <ProductCard key={p.id} product={p} index={i} />
+          <ScrollReveal className="mt-20">
+            <h2 className="section-title-glow mb-8 text-2xl font-black md:text-3xl">
+              {t.productDetail.relatedProducts}
+            </h2>
+            <StaggerReveal className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {related.map((p) => (
+                <ProductCard key={p.id} product={p} />
               ))}
-            </div>
-          </motion.section>
+            </StaggerReveal>
+          </ScrollReveal>
         )}
       </main>
     </div>

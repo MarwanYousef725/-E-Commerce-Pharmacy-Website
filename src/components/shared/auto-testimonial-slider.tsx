@@ -32,41 +32,29 @@ export function AutoTestimonialSlider() {
         <p className="mt-2 text-slate-600 dark:text-slate-300">{t.testimonials.subtitle}</p>
       </motion.div>
 
-      <div className="relative mt-10 overflow-hidden rounded-3xl border border-emerald-500/20 bg-white/55 p-8 backdrop-blur-2xl dark:border-emerald-400/15 dark:bg-slate-900/55 neo-glow md:p-12">
+      <div className="border-beam relative mt-10 overflow-hidden rounded-3xl border border-emerald-500/20 bg-white/80 p-8 shadow-md neo-glow-soft dark:border-emerald-400/15 dark:bg-slate-900/80 md:p-12">
         <AnimatePresence mode="wait">
           <motion.div
             key={current.id}
-            initial={{ opacity: 0, x: isRtl ? -60 : 60 }}
+            initial={{ opacity: 0, x: isRtl ? -40 : 40 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: isRtl ? 60 : -60 }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            exit={{ opacity: 0, x: isRtl ? 40 : -40 }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
             className="flex flex-col items-center text-center"
           >
-            <motion.div
-              animate={{ y: [0, -6, 0] }}
-              transition={{ duration: 3, repeat: Infinity }}
-              className="relative mb-6"
-            >
-              <div className="absolute -inset-2 rounded-full bg-emerald-500/20 blur-lg" />
+            <div className="hero-media-float relative mb-6">
               <Image
                 src={current.avatar}
                 alt=""
                 width={96}
                 height={96}
-                className="relative rounded-full border-4 border-emerald-500/30 object-cover"
+                className="rounded-full border-4 border-emerald-500/30 object-cover shadow-lg"
               />
-            </motion.div>
+            </div>
 
             <div className="mb-4 flex gap-1">
               {Array.from({ length: current.rating }).map((_, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ delay: i * 0.1 }}
-                >
-                  <Star className="size-5 fill-amber-400 text-amber-400" />
-                </motion.div>
+                <Star key={i} className="size-5 fill-amber-400 text-amber-400" />
               ))}
             </div>
 
@@ -84,13 +72,12 @@ export function AutoTestimonialSlider() {
 
         <div className="mt-8 flex justify-center gap-2">
           {testimonials.map((_, i) => (
-            <motion.button
+            <button
               key={i}
               onClick={() => setIndex(i)}
               className={`h-2 rounded-full transition-all ${
                 index === i ? "w-10 bg-emerald-600" : "w-6 bg-slate-300 dark:bg-slate-700"
               }`}
-              whileHover={{ scale: 1.2 }}
               aria-label={`Testimonial ${i + 1}`}
             />
           ))}
